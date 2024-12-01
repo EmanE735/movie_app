@@ -1,0 +1,6 @@
+flutter_native_splash:
+  image: "assets/images/movies.png"
+  color: "#121312"
+  android_12:
+    image: assets/images/Group 25.png
+    color: "#121312"
