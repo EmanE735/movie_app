@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/home_screen.dart';
 
 void main() {
   runApp(const MovieApp());
@@ -11,12 +12,10 @@ class MovieApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      routes: {HomeScreen.routeName: (_) => HomeScreen()},
+      initialRoute: HomeScreen.routeName,
     );
+    // home: const MyHomePage(title: 'Flutter Demo Home Page'),
   }
 }
