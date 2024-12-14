@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/app_theme.dart';
-import 'package:movie_app/model/movie_details.dart';
+import 'package:movie_app/model/model.dart';
 import 'package:movie_app/service/service.dart';
 import 'package:movie_app/tabs/movie_details_screen.dart';
 
@@ -23,7 +23,7 @@ class MovieListScreen extends StatefulWidget {
 }
 
 class _MovieListScreenState extends State<MovieListScreen> {
-  late Future<List<MovieDetails>> moviesFuture;
+  late Future<List<Movie>> moviesFuture;
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _MovieListScreenState extends State<MovieListScreen> {
           ),
         ),
       ),
-      body: FutureBuilder<List<MovieDetails>>(
+      body: FutureBuilder<List<Movie>>(
         future: moviesFuture,
         builder: (context, snapshot) {
           /* -------------------------------------------------------------------------- */
@@ -108,6 +108,7 @@ class _MovieListScreenState extends State<MovieListScreen> {
                         MaterialPageRoute(
                           builder: (context) => MovieDetailsScreen(
                             movie: movie,
+                            categoryId: widget.categoryId,
                           ),
                         ),
                       );

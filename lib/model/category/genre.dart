@@ -27,4 +27,16 @@ class Genre {
         'id': id,
         'name': name,
       };
+
+  static List<String> getGenreNames(
+      List<int> genreIds, List<Genre> availableGenres) {
+    return genreIds
+        .map((id) => availableGenres
+            .firstWhere(
+              (genre) => genre.id == id,
+              orElse: () => const Genre(id: 0, name: "Unknown"),
+            )
+            .name)
+        .toList();
+  }
 }

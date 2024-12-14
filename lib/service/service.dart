@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:movie_app/model/category/category.dart';
 import 'package:movie_app/model/model.dart';
-import 'package:movie_app/model/movie_details.dart';
 
 const apiKey = "2e6c2e6ae95a53ab0052be44ce7f9327";
 
@@ -31,14 +30,14 @@ class APIservice {
     }
   }
 
-  Future<List<MovieDetails>> getMoviesByCategory(int categoryId) async {
+  Future<List<Movie>> getMoviesByCategory(int categoryId) async {
     final url = '$discoverApi$categoryId';
 
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body)['results'];
-      return data.map((movieData) => MovieDetails.fromJson(movieData)).toList();
+      return data.map((movieData) => Movie.fromMap(movieData)).toList();
     } else {
       throw Exception('Failed to load movies');
     }
