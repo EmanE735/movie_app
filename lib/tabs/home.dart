@@ -10,6 +10,8 @@ class HomeTab extends StatefulWidget {
   State<HomeTab> createState() => _HomeTabState();
 }
 
+int current = 0;
+
 class _HomeTabState extends State<HomeTab> {
   late Future<List<Movie>> popularMovies;
   late Future<List<Movie>> upComing;
@@ -25,6 +27,8 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -39,27 +43,64 @@ class _HomeTabState extends State<HomeTab> {
                     );
                   }
                   final movies = snapshot.data!;
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    child: CarouselView(
-                      itemSnapping: true,
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(),
-                      itemExtent: MediaQuery.of(context).size.width,
-                      children: List.generate(
-                        movies.length,
-                        (int index) {
-                          final Movie = movies[index];
-                          return Container(
-                            child: Image.network(
-                              'https://image.tmdb.org/t/p/original/${Movie.backDropPath}',
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        },
-                      ),
+                  return Column(children: [
+                    Container(
+                      height: height * 0.3,
+                      color: AppTheme.black1,
+                      width: double.infinity,
+                      child: Stack(children: [
+                        CarouselView(
+                          itemSnapping: true,
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(),
+                          itemExtent: MediaQuery.of(context).size.width,
+                          children: List.generate(
+                            movies.length,
+                            (int index) {
+                              final Movie = movies[index];
+                              return Stack(children: [
+                                Container(
+                                  // height: height * .2,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              "https://image.tmdb.org/t/p/original/${Movie.backDropPath},"),
+                                          fit: BoxFit.cover)),
+                                ),
+                                // Image.network(
+                                //   "https://image.tmdb.org/t/p/original/${Movie.backDropPath},",
+                                //   height: height * .2,
+                                //   fit: BoxFit.cover,
+                                // ),
+                                // Positioned(
+                                //   bottom: 20,
+                                //   left: 10,
+                                //   child: Container(
+                                //     height: height * .2,
+                                //     width: width * .3,
+                                //     decoration: BoxDecoration(
+                                //         image: DecorationImage(
+                                //             image: NetworkImage(
+                                //                 "https://image.tmdb.org/t/p/original/${Movie.backDropPath},"),
+                                //             fit: BoxFit.cover)),
+                                //   ),
+                                // ),
+
+                                // Positioned(
+                                //   bottom: height * .05,
+                                //   left: width * .4,
+                                //   child: Text(
+                                //     "${Movie.title}",
+                                //     style: TextStyle(color: AppTheme.black1),
+                                //   ),
+                                // ),
+                              ]);
+                            },
+                          ),
+                        ),
+                      ]),
                     ),
-                  );
+                  ]);
                 }),
             SizedBox(
               height: 10,
