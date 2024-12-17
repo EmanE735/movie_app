@@ -4,6 +4,7 @@ import 'package:movie_app/app_theme.dart';
 import 'package:movie_app/tabs/browse.dart';
 import 'package:movie_app/tabs/home.dart';
 import 'package:movie_app/tabs/search.dart';
+import 'package:movie_app/tabs/watch_list.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -15,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
 
-  List<Widget> tabs = [HomeTab(), SearchTab(), BrowseTab()];
+  List<Widget> tabs = [HomeTab(), SearchTab(), const BrowseTab(),WatchlistScreen()];
 
   @override
   Widget build(BuildContext context) {

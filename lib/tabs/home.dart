@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/app_theme.dart';
 import 'package:movie_app/model/model.dart';
+import 'package:movie_app/providers/watchlist_provider.dart';
 import 'package:movie_app/service/service.dart';
 import 'package:movie_app/tabs/movie_details_screen.dart';
+import 'package:provider/provider.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -266,6 +268,10 @@ class _HomeTabState extends State<HomeTab> {
   /*                         Movie Card Widget                                  */
   /* -------------------------------------------------------------------------- */
   Widget _buildMovieCard(Movie movie) {
+    bool isMovieInWatchlist = context
+        .watch<WatchlistProvider>()
+        .watchlist
+        .any((m) => m.id == movie.id);
     return Padding(
       padding: const EdgeInsets.only(right: 12),
       child: GestureDetector(
@@ -294,16 +300,41 @@ class _HomeTabState extends State<HomeTab> {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             children: [
               // Movie Poster
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  'https://image.tmdb.org/t/p/original/${movie.backDropPath}',
-                  height: 130,
-                  width: 120,
-                  fit: BoxFit.cover,
+                child: Stack(
+                  children: [
+                    Image.network(
+                      'https://image.tmdb.org/t/p/original/${movie.backDropPath}',
+                      height: 130,
+                      width: 120,
+                      fit: BoxFit.cover,
+                    ),
+                    Positioned(left: 0,
+                      child: IconButton(
+                        onPressed: () {
+                          if (isMovieInWatchlist) {
+                                    
+                                        context.read<WatchlistProvider>().removeFromWatchlist(movie);
+                                      } else {
+                                      
+                                        context.read<WatchlistProvider>().addToWatchlist(movie);
+                                      }
+                        },
+                        icon: Icon(
+                            isMovieInWatchlist
+                                ? Icons.bookmark_remove_sharp
+                                : Icons.bookmark_add_sharp,
+                            size: 40,
+                            color: isMovieInWatchlist
+                                ? AppTheme.primary
+                                : AppTheme.grey1),
+                      ),
+                    )
+                  ],
                 ),
               ),
               const SizedBox(height: 2),
