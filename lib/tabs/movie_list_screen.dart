@@ -3,6 +3,8 @@ import 'package:movie_app/app_theme.dart';
 import 'package:movie_app/model/model.dart';
 import 'package:movie_app/service/service.dart';
 import 'package:movie_app/tabs/movie_details_screen.dart';
+import 'package:movie_app/widgets/watchlist_button.dart';
+//import 'package:movie_app/home_screen.dart';
 
 /* -------------------------------------------------------------------------- */
 /*                             Movie List Screen                              */
@@ -125,6 +127,11 @@ class _MovieListScreenState extends State<MovieListScreen> {
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: double.infinity,
+                          ),
+                          Positioned(
+                            top: 0,
+                            left: 1,
+                            child: WatchlistButton(movie: movie),
                           ),
                         ],
                       ),
