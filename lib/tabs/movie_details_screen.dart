@@ -7,6 +7,8 @@ import 'package:movie_app/model/model.dart';
 import 'package:movie_app/service/service.dart';
 import 'package:movie_app/model/category/genre.dart';
 import 'package:movie_app/model/category/category.dart';
+//import 'package:movie_app/home_screen.dart';
+import 'package:movie_app/widgets/watchlist_button.dart';
 
 /* -------------------------------------------------------------------------- */
 /*                         Movie Details Screen Widget                        */
@@ -49,7 +51,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.black2,
+      backgroundColor: AppTheme.black1,
       /* -------------------------------------------------------------------------- */
       /*                                AppBar                                     */
       /* -------------------------------------------------------------------------- */
@@ -68,6 +70,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          // Add WatchlistButton to AppBar
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: WatchlistButton(movie: widget.movie),
+          ),
+        ],
       ),
       /* -------------------------------------------------------------------------- */
       /*                         Main Content Body                                 */
@@ -147,7 +156,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              '${widget.movie.voteAverage}/10',
+                              '${widget.movie.voteAverage.toStringAsFixed(1)}/10',
                               style: const TextStyle(
                                 color: AppTheme.white2,
                                 fontSize: 16,
@@ -158,9 +167,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         ),
                         const SizedBox(height: 8),
 
-                        // Release Date
                         Text(
-                          widget.movie.releaseDate,
+                          widget.movie.releaseDate
+                              .split('-')
+                              .reversed
+                              .join('/'),
                           style: const TextStyle(
                             color: AppTheme.white2,
                             fontSize: 14,
@@ -284,66 +295,77 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                       ),
                                     );
                                   },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color:
-                                              AppTheme.grey1.withOpacity(0.6),
-                                          spreadRadius: 1,
-                                          blurRadius: 4,
-                                          offset: const Offset(0, 2),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        ClipRRect(
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(8),
-                                          child: Image.network(
-                                            'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                                            height: 120,
-                                            width: 120,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        SizedBox(
-                                          width: 80,
-                                          child: Text(
-                                            movie.title,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                              color: AppTheme.white2,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.star,
-                                              color: Colors.amber,
-                                              size: 24,
-                                            ),
-                                            Text(
-                                              '${movie.voteAverage}/10',
-                                              style: const TextStyle(
-                                                color: AppTheme.white2,
-                                                fontSize: 14,
-                                              ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: AppTheme.grey1
+                                                  .withOpacity(0.6),
+                                              spreadRadius: 1,
+                                              blurRadius: 4,
+                                              offset: const Offset(0, 2),
                                             ),
                                           ],
                                         ),
-                                      ],
-                                    ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: Image.network(
+                                                'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                                                height: 120,
+                                                width: 120,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            SizedBox(
+                                              width: 80,
+                                              child: Text(
+                                                movie.title,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  color: AppTheme.white2,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.star,
+                                                  color: Colors.amber,
+                                                  size: 24,
+                                                ),
+                                                Text(
+                                                  '${movie.voteAverage.toStringAsFixed(1)}/10',
+                                                  style: const TextStyle(
+                                                    color: AppTheme.white2,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      // Add WatchlistButton
+                                      Positioned(
+                                        top: 2,
+                                        left: 3,
+                                        child: WatchlistButton(movie: movie),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               );
@@ -359,6 +381,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           ),
         ),
       ),
+      //bottomNavigationBar: HomeScreen.buildBottomNavigationBar(),
     );
   }
 }

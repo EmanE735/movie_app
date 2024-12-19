@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/home_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: true,
+    cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
+  );
   runApp(const MovieApp());
 }
 
@@ -13,7 +23,8 @@ class MovieApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: {HomeScreen.routeName: (_) => HomeScreen()},
+      navigatorKey: navigatorKey,
+      routes: {HomeScreen.routeName: (_) => const HomeScreen()},
       initialRoute: HomeScreen.routeName,
     );
     // home: const MyHomePage(title: 'Flutter Demo Home Page'),
